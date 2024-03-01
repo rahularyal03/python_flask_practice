@@ -69,13 +69,13 @@ def add_user():
                 "message": "User saved successfully",
                 "success": True,
                 "status": 201
-            })
+            }), 201
             
         return jsonify({
                 "message": "Something went wrong",
                 "success": False,
                 "status":500
-            }), 201
+            }), 500
         
      
     except Exception as e:
@@ -115,14 +115,14 @@ def update_user_info(id):
             return jsonify({
                     "message": "User successfully updated",
                     "success": True,
-                    "status": 203
+                    "status": 201
                 }), 201
         
         return jsonify({
                     "message": "Something went wrong",
                     "success": False,
                     "status": 500
-                }), 201
+                }), 500
     
     except Exception as e:
         return jsonify({
