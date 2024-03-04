@@ -7,6 +7,7 @@ class User(object):
         self.name = data.get("name")
         self.password = data.get("password")
         self.phone = data.get("phone", [])
+        self.comment_id = ObjectId(data.get("comment_id"))
         self.created_at = str(datetime.utcnow())
     
     
@@ -44,36 +45,23 @@ class User(object):
         }, "$push":{"phone": self.phone}})
         return data
     
-
-        
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
      
     # def save_to_db(self):
-        # db.user.update_one({
-        #      {"name": self.name},
-        #     {
-        #         "$set": {
+    #     db.user.update_one({
+    #          {"name": self.name},
+    #         {
+    #             "$set": {
                     
-        #             "name": self.name,
-        #             "password": self.password,
-        #             "phone": self.phone,
-        #             "created_at": self.create_at,
+    #                 "name": self.name,
+    #                 "password": self.password,
+    #                 "phone": self.phone,
+    #                 "created_at": self.create_at,
 
-        #         },
+    #             },
               
-        #     },
-        #     True
-        # })
+    #         },
+    #         True
+    #     })
 
 
 
