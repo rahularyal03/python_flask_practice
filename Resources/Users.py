@@ -83,12 +83,46 @@ def add_user():
             "message": str(e)
         }), 500
         
+        
+@users.route('/api/user/<string:id>', methods=['DELETE'])
+def delete_user(id):
+    try:
+        result = User.delete_user_by_id(id)
+        print(result)
+        
+        if(result.acknowledged == True):
+            return jsonify({
+                    "message": "User deleted successfully",
+                    "success": True,
+                    "status": 200
+                }), 201
+            
+        return jsonify({
+                    "message": "Something went wrong",
+                    "success": False,
+                    "status":500
+                }), 500
+    
+    except Exception as e:
+        return jsonify({
+            "message": str(e)
+        }), 500
+        
 
 @users.route('/api/user/<string:id>', methods=['GET'])
 
 def update_user_details(id):
-    data = User.find_user(id)
-    return jsonify("i am called and my id is {} and data is {}".format(id, data))
+    try:
+        data = User.find_user(id)
+        return jsonify({"data": data, 
+                        "success": True,
+                        "status": 200}), 200
+        
+    except Exception as e:
+        return jsonify({
+            "message": str(e)
+        }), 500
+
 
 
 @users.route('/api/user/<string:id>', methods=["PUT"])
@@ -123,6 +157,48 @@ def update_user_info(id):
                     "success": False,
                     "status": 500
                 }), 500
+    
+    except Exception as e:
+        return jsonify({
+            "message": str(e)
+        }), 500
+
+
+# sorting and limiting query result 
+
+@users.route('/api/user/filter/<string:name>', methods=['GET'])
+def find_by_name(name):
+    try:
+        res = User.get_data(name)
+        result = list(res)
+        print(result)
+        items = []
+        for i in result:
+            i['_id'] = str(i['_id'])
+            items.append(i)
+            
+        return jsonify({
+                        "data": items,
+                        "success": True,
+                        "status": 201
+                    }), 201
+        
+    except Exception as e:
+        return jsonify({
+            "message": str(e)
+        }), 500
+
+    
+    
+@users.route('/api/user/counts', methods=["GET"])
+def count_total_user():
+    try:
+        count = User.count_user()
+        return jsonify({
+                        "count": count,
+                        "success": True,
+                        "status": 200
+                    }), 200
     
     except Exception as e:
         return jsonify({

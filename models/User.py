@@ -7,7 +7,6 @@ class User(object):
         self.name = data.get("name")
         self.password = data.get("password")
         self.phone = data.get("phone", [])
-        self.comment_id = ObjectId(data.get("comment_id"))
         self.created_at = str(datetime.utcnow())
     
     
@@ -45,24 +44,40 @@ class User(object):
         }, "$push":{"phone": self.phone}})
         return data
     
+    def delete_user_by_id(id):
+        data = db.users.delete_one({"_id": ObjectId(id)})
+        return data
+    
      
-    # def save_to_db(self):
-    #     db.user.update_one({
-    #          {"name": self.name},
-    #         {
-    #             "$set": {
-                    
-    #                 "name": self.name,
-    #                 "password": self.password,
-    #                 "phone": self.phone,
-    #                 "created_at": self.create_at,
-
-    #             },
-              
-    #         },
-    #         True
-    #     })
-
-
-
-
+    @staticmethod
+    def get_data(name):
+        user_name = name.split("+")
+        user = " ".join(user_name)
+        print(user)
+        
+        # It will display all the users.
+        # data = db.users.find({"name": user})
+        
+        # It will display all the user with that query name and only display the phone number and the userId
+        # data = db.users.find({"name": user}, {"phone": 1})
+        
+        
+        # Here 0 is for exclude and 1 is to include
+        data = db.users.find({"name": user}, {"password": 0}).limit(2)
+        
+        
+        # limiting the query without sorting
+        # data = db.users.find({"name": user}, {"phone": 1}).limit(2)
+        
+        # limiting the query with sorting
+        # data = db.users.find({"name": user}, {"phone": 1}).sort({"phone": 1}).limit(2)
+        
+        return data
+    
+    
+    
+    def count_user():
+        count = db.users.count_documents({})
+        return count
+    
+    

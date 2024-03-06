@@ -28,7 +28,10 @@ class Comment(object):
     def get_all_comments(id):
         data = db.all_comments.find({"_id": ObjectId(id)})
         return data
-        
+    
+    
+    
+   
     
     
     
